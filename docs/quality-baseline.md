@@ -105,6 +105,8 @@ Every project has a `scope:*` and a `type:*` tag. `@nx/enforce-module-boundaries
 - Root package `@playbook/source`; library imports `@playbook/<lib>` (e.g. `@playbook/data-access`, `@playbook/shared-ui`).
 - Project names `<scope>-<lib>`; selector prefix `pb`; kebab-case file names; no `Component` class suffix (Angular v20+ style guide).
 - Commit messages `<type>: <Subject> - GAAP-<number>` (`GAAP-0` without a ticket), enforced by commitlint.
+- Pull requests are squash-merged and the PR title becomes the commit title on `main`, so the `pr-title` workflow
+  lints the PR title with the same commitlint config (it reruns when the title is edited).
 
 ## Styles and theme
 

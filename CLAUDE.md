@@ -41,6 +41,8 @@ The quality baseline and its rationale: `docs/quality-baseline.md`.
 - Every component has separate `.ts`, `.html` and (if needed) `.scss` files, OnPush change detection and signal inputs.
 - Commit messages: `<type>: <Subject> - GAAP-<number>` (e.g. `feat: Add pattern list - GAAP-12`; `GAAP-0` without a ticket).
   No AI co-author trailers (`Co-Authored-By: Claude …`) in commit messages.
+- Pull requests are squash-merged, so the PR title becomes the commit message on `main`: it must follow the same
+  commit format (checked by the `pr-title` workflow).
 - No Nx Cloud; never skip git hooks.
 
 ## Design (Angular Material 3)
