@@ -1,0 +1,24 @@
+// Self-hosted IBM Plex, latin subset, woff2 only (copied to /fonts by the app build, see apps/playbook/project.json).
+// Only the weights the theme uses: sans 400/500/600 (plain text), serif 400/600 (brand: titles and headlines).
+@use 'sass:string';
+
+$latin-range: string.unquote(
+  'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD'
+);
+
+@mixin face($family, $file, $weight) {
+  @font-face {
+    font-family: $family;
+    font-style: normal;
+    font-weight: $weight;
+    src: url('/fonts/#{$file}-latin-#{$weight}-normal.woff2') format('woff2');
+    font-display: swap;
+    unicode-range: $latin-range;
+  }
+}
+
+@include face('IBM Plex Sans', 'ibm-plex-sans', 400);
+@include face('IBM Plex Sans', 'ibm-plex-sans', 500);
+@include face('IBM Plex Sans', 'ibm-plex-sans', 600);
+@include face('IBM Plex Serif', 'ibm-plex-serif', 400);
+@include face('IBM Plex Serif', 'ibm-plex-serif', 600);

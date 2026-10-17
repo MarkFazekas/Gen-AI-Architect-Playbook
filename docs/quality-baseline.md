@@ -129,20 +129,30 @@ Every project has a `scope:*` and a `type:*` tag. `@nx/enforce-module-boundaries
 
 ## Gates
 
-| Stage           | Runs                                                                                                               |
-| --------------- | ------------------------------------------------------------------------------------------------------------------ |
-| AI agent edit   | Claude Code hooks: guards before the edit; Prettier, ESLint, stylelint, cspell on the file after it                |
-| AI agent finish | Stop hook: `nx affected -t lint typecheck test` for the changed files; report of changed quality-gate files        |
-| `pre-commit`    | lint-staged: ESLint, Prettier, stylelint, cspell on staged files                                                   |
-| `commit-msg`    | commitlint                                                                                                         |
-| `pre-push`      | `nx sync:check`, `nx affected -t lint typecheck test`                                                              |
-| CI              | sync and format checks, `nx affected -t lint typecheck test build e2e`, stylelint, cspell, knip, audit, commitlint |
+| Stage           | Runs                                                                                                                    |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| AI agent edit   | Claude Code hooks: guards before the edit; Prettier, ESLint, stylelint, cspell on the file after it                     |
+| AI agent finish | Stop hook: `nx affected -t lint typecheck test` for the changed files; report of changed quality-gate files             |
+| `pre-commit`    | lint-staged: ESLint, Prettier, stylelint, cspell on staged files                                                        |
+| `commit-msg`    | commitlint                                                                                                              |
+| `pre-push`      | `nx sync:check`, `nx affected -t lint typecheck test`                                                                   |
+| CI              | sync and format checks, `nx affected -t lint typecheck test build size e2e`, stylelint, cspell, knip, audit, commitlint |
 
 `npm run quality` runs the whole gate locally (without e2e), including the custom lint rule tests (`npm run test:lint-rules`).
 
 Unit test coverage must reach 80% (statements, branches, functions, lines) in every project: `coverage.thresholds`
 in each library's `vite.config.mts`, `coverageThresholds` in the app's `project.json`. Bootstrap files (`main.ts`,
 `app.config.ts`) are covered by the e2e tests instead.
+
+## Deployment size
+
+The production build (`dist/apps/playbook`) must stay below 1 MB in total; the `size` target
+(`tools/scripts/check-dist-size.mjs`) fails the gate otherwise. What keeps it small:
+
+- Fonts: IBM Plex latin subset in woff2 only, the five weights the theme uses (`libs/shared/theme/src/_fonts.scss`).
+- Icons: no icon font. When icons are needed, register individual SVGs (e.g. from `@material-symbols/svg-400`) with
+  `MatIconRegistry`, so only the icons in use are shipped.
+- Runtime validation: `zod/mini` instead of the full Zod API.
 
 ## AI tooling
 
@@ -163,16 +173,16 @@ in each library's `vite.config.mts`, `coverageThresholds` in the app's `project.
 
 ## Decisions
 
-| Topic            | Decision                                                                                 |
-| ---------------- | ---------------------------------------------------------------------------------------- |
-| Monorepo tooling | Nx 23, without Nx Cloud (`neverConnectToCloud`)                                          |
-| Node             | 26 LTS (supported until 2029-04-30), nvm + `.nvmrc`                                      |
-| Package manager  | npm, lockfile committed, `save-exact`, `engine-strict`                                   |
-| Framework        | Angular 22, zoneless, standalone components, signals                                     |
-| UI               | Angular Material 3, central theme, IBM Plex Sans/Serif and Material Symbols, self-hosted |
-| Unit tests       | Vitest: `vitest-angular` for the app, `vitest-analog` for libraries                      |
-| End-to-end       | Playwright (Chromium) + axe WCAG 2.1 AA                                                  |
-| Language         | English for code, docs and commit messages                                               |
+| Topic            | Decision                                                                          |
+| ---------------- | --------------------------------------------------------------------------------- |
+| Monorepo tooling | Nx 23, without Nx Cloud (`neverConnectToCloud`)                                   |
+| Node             | 26 LTS (supported until 2029-04-30), nvm + `.nvmrc`                               |
+| Package manager  | npm, lockfile committed, `save-exact`, `engine-strict`                            |
+| Framework        | Angular 22, zoneless, standalone components, signals                              |
+| UI               | Angular Material 3, central theme, self-hosted IBM Plex Sans/Serif (latin, woff2) |
+| Unit tests       | Vitest: `vitest-angular` for the app, `vitest-analog` for libraries               |
+| End-to-end       | Playwright (Chromium) + axe WCAG 2.1 AA                                           |
+| Language         | English for code, docs and commit messages                                        |
 
 ## Technical notes
 
@@ -192,4 +202,3 @@ in each library's `vite.config.mts`, `coverageThresholds` in the app's `project.
 ## Open items
 
 - Final brand colors and fonts (regenerate the palettes; two lines in `theme.scss`).
-- The lazy feature chunk is ~465 kB raw, mostly Zod; consider `zod/mini` once the data layer grows.

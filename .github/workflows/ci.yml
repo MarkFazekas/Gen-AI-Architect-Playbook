@@ -28,8 +28,9 @@ jobs:
       - run: npx nx sync:check
       - run: npx nx format:check
 
-      # type safety, lint (incl. module boundaries), unit tests, build (incl. template type checks)
-      - run: npx nx affected -t lint typecheck test build
+      # type safety, lint (incl. module boundaries), unit tests, build (incl. template type checks),
+      # deployment size (max 1 MB)
+      - run: npx nx affected -t lint typecheck test build size
 
       # end-to-end and accessibility (axe, WCAG 2.1 AA)
       - run: npx playwright install --with-deps chromium
