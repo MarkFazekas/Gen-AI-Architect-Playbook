@@ -1,0 +1,41 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "dictionaries": ["typescript", "node", "npm", "html", "css", "scss", "softwareTerms", "fullstack", "companies"],
+  "words": [
+    "analogjs",
+    "darglint",
+    "dbaeumer",
+    "docstrings",
+    "esbenp",
+    "flake8",
+    "fontsource",
+    "GAAP",
+    "gitlint",
+    "isort",
+    "mccabe",
+    "moto",
+    "mypy",
+    "nrwl",
+    "pydantic",
+    "pydocstyle",
+    "pytest",
+    "ruff",
+    "sonarjs",
+    "streetsidesoftware",
+    "styleguide",
+    "wemake",
+    "worktrees",
+    "zoneless"
+  ],
+  "ignorePaths": [
+    "node_modules",
+    "dist",
+    "coverage",
+    ".angular",
+    ".nx",
+    "package-lock.json",
+    "angular-quality-baseline.md",
+    "**/_theme-colors.scss"
+  ]
+}

@@ -1,0 +1,2 @@
+. "$(dirname "$0")/use-node.sh"
+npx nx sync:check && npx nx affected -t lint typecheck test

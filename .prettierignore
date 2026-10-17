@@ -1,0 +1,7 @@
+/dist
+/coverage
+/.nx/cache
+/.nx/workspace-data
+/.angular
+package-lock.json
+angular-quality-baseline.md

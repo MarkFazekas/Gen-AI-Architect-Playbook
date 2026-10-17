@@ -1,0 +1,44 @@
+{
+  "extends": ["stylelint-config-standard-scss", "stylelint-config-recess-order"],
+  "plugins": ["stylelint-declaration-strict-value"],
+  "rules": {
+    "max-nesting-depth": [
+      3,
+      {
+        "ignore": ["pseudo-classes"]
+      }
+    ],
+    "selector-max-compound-selectors": 3,
+    "selector-max-id": 0,
+    "selector-no-qualifying-type": true,
+    "declaration-no-important": true,
+    "at-rule-disallowed-list": ["import"],
+    "selector-pseudo-element-no-unknown": [
+      true,
+      {
+        "ignorePseudoElements": ["ng-deep"]
+      }
+    ],
+    "selector-pseudo-element-disallowed-list": ["ng-deep"],
+    "color-named": "never",
+    "color-no-hex": true,
+    "function-disallowed-list": ["/^(rgba?|hsla?|hwb|lab|lch|oklab|oklch)$/", "/gradient$/"],
+    "scale-unlimited/declaration-strict-value": [
+      ["/color$/", "fill", "stroke", "z-index", "font", "font-family", "border-radius", "box-shadow"],
+      {
+        "ignoreValues": ["currentColor", "inherit", "initial", "unset", "transparent", "none", "0"]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["libs/shared/theme/**/*.scss"],
+      "rules": {
+        "color-no-hex": null,
+        "function-disallowed-list": null,
+        "scale-unlimited/declaration-strict-value": null
+      }
+    }
+  ],
+  "ignoreFiles": ["libs/shared/theme/src/_theme-colors.scss"]
+}

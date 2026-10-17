@@ -1,0 +1,12 @@
+<section class="pattern-list">
+  <h1 class="heading">Patterns</h1>
+  <ul class="cards">
+    @for (pattern of patterns(); track pattern.id) {
+      <li>
+        <pb-pattern-card [title]="pattern.title" [summary]="pattern.summary" [status]="pattern.status" />
+      </li>
+    } @empty {
+      <li class="empty">No patterns yet.</li>
+    }
+  </ul>
+</section>

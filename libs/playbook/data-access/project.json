@@ -1,0 +1,29 @@
+{
+  "name": "playbook-data-access",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/playbook/data-access/src",
+  "prefix": "pb",
+  "projectType": "library",
+  "tags": ["scope:playbook", "type:data-access"],
+  "targets": {
+    "test": {
+      "outputs": [
+        "{projectRoot}/{options.coverage.reportsDirectory}",
+        "{workspaceRoot}/coverage/libs/playbook/data-access"
+      ],
+      "options": {
+        "coverage.reportsDirectory": "../../../coverage/libs/playbook/data-access"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc -p {projectRoot}/tsconfig.lib.json --noEmit",
+          "tsc -p {projectRoot}/tsconfig.spec.json --noEmit"
+        ],
+        "parallel": false
+      }
+    }
+  }
+}
