@@ -8,12 +8,27 @@
 .angular/
 
 # Node modules and dependency files
+# (package-lock.json is committed: npm ci, save-exact, npm audit)
 /node_modules/
-/package-lock.json
 /yarn.lock
+
+# Nx
+.nx/cache
+.nx/workspace-data
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+**/test-output/
 
 # Environment files
 /.env
+/.env.*
+!/.env.template
+
+# Claude Code (personal settings; the shared .claude/settings.json is committed)
+.claude/settings.local.json
 
 # Angular CLI and build artefacts
 /.angular-cli.json
