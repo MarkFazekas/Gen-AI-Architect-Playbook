@@ -1,0 +1,17 @@
+{
+  "name": "playbook-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/playbook-e2e/src",
+  "implicitDependencies": ["playbook"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["tsc -p {projectRoot}/tsconfig.json --noEmit"],
+        "parallel": false
+      }
+    }
+  },
+  "tags": ["scope:playbook", "type:e2e"]
+}

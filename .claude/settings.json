@@ -1,0 +1,99 @@
+{
+  "extraKnownMarketplaces": {
+    "nx-claude-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "nrwl/nx-ai-agents-config"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "nx@nx-claude-plugins": true
+  },
+  "sandbox": {
+    "filesystem": {
+      "allowRead": ["/tmp/.nx", "~/.nx"],
+      "allowWrite": ["/tmp/.nx", "~/.nx"]
+    },
+    "network": {
+      "allowUnixSockets": ["/tmp/.nx", "~/.nx"]
+    }
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npx nx:*)",
+      "Bash(npm exec nx:*)",
+      "Bash(npm run:*)",
+      "Bash(npm ci)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "mcp__angular-cli",
+      "mcp__playwright",
+      "Bash(npm view *)",
+      "Bash(npm audit)",
+      "Bash(npm audit --json*)",
+      "Bash(npm audit --omit=dev*)",
+      "Bash(npm audit --audit-level*)",
+      "Bash(npm ls *)",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(git add:*)"
+    ],
+    "ask": ["Bash(npm install:*)", "Bash(npm i:*)"],
+    "deny": ["Read(./.env)", "Read(./.env.*)", "Bash(npm publish:*)"]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [{ "type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run.sh session-start.mjs" }]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run.sh guard-edit.mjs",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run.sh guard-bash.mjs",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run.sh lint-file.mjs",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run.sh quality-gate.mjs",
+            "timeout": 900
+          }
+        ]
+      }
+    ]
+  }
+}

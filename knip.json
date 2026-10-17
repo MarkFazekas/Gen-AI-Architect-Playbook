@@ -1,0 +1,26 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignoreExportsUsedInFile": true,
+  "entry": [
+    "apps/*/src/main.ts",
+    "apps/*/src/app/app.config.ts",
+    "apps/*-e2e/playwright.config.mts",
+    "libs/*/*/src/index.ts",
+    "**/eslint.config.mjs",
+    "eslint.angular.mjs",
+    "tools/lint-rules/index.mjs"
+  ],
+  "project": ["apps/**/*.{ts,mts}", "libs/**/*.{ts,mts}", "tools/**/*.mjs", "*.mjs"],
+  "ignoreDependencies": [
+    "@fontsource/ibm-plex-sans",
+    "@fontsource/ibm-plex-serif",
+    "material-symbols",
+    "@angular/cli",
+    "@angular/language-service",
+    "@nx/devkit",
+    "@nx/js",
+    "@nx/workspace",
+    "@oxc-project/runtime",
+    "@swc/helpers"
+  ]
+}

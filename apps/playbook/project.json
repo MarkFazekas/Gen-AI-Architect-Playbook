@@ -1,0 +1,107 @@
+{
+  "name": "playbook",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "pb",
+  "sourceRoot": "apps/playbook/src",
+  "tags": ["scope:playbook", "type:app"],
+  "implicitDependencies": ["shared-theme"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/playbook",
+        "browser": "apps/playbook/src/main.ts",
+        "tsConfig": "apps/playbook/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/playbook/public"
+          }
+        ],
+        "styles": [
+          "@fontsource/ibm-plex-sans/400.css",
+          "@fontsource/ibm-plex-sans/500.css",
+          "@fontsource/ibm-plex-sans/600.css",
+          "@fontsource/ibm-plex-serif/400.css",
+          "@fontsource/ibm-plex-serif/600.css",
+          "material-symbols/outlined.css",
+          "libs/shared/theme/src/theme.scss",
+          "apps/playbook/src/styles.scss"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      }
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "defaultConfiguration": "development",
+      "configurations": {
+        "production": {
+          "buildTarget": "playbook:build:production"
+        },
+        "development": {
+          "buildTarget": "playbook:build:development"
+        }
+      }
+    },
+    "test": {
+      "executor": "@angular/build:unit-test",
+      "options": {
+        "watch": false,
+        "coverage": true,
+        "coverageExclude": ["src/main.ts", "src/app/app.config.ts"],
+        "coverageThresholds": {
+          "statements": 80,
+          "branches": 80,
+          "functions": 80,
+          "lines": 80
+        }
+      }
+    },
+    "serve-static": {
+      "continuous": true,
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "playbook:build",
+        "port": 4200,
+        "staticFilePath": "dist/apps/playbook/browser",
+        "spa": true
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc -p {projectRoot}/tsconfig.app.json --noEmit",
+          "tsc -p {projectRoot}/tsconfig.spec.json --noEmit"
+        ],
+        "parallel": false
+      }
+    }
+  }
+}

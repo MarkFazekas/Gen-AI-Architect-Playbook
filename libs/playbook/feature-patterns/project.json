@@ -1,0 +1,29 @@
+{
+  "name": "playbook-feature-patterns",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/playbook/feature-patterns/src",
+  "prefix": "pb",
+  "projectType": "library",
+  "tags": ["scope:playbook", "type:feature"],
+  "targets": {
+    "test": {
+      "outputs": [
+        "{projectRoot}/{options.coverage.reportsDirectory}",
+        "{workspaceRoot}/coverage/libs/playbook/feature-patterns"
+      ],
+      "options": {
+        "coverage.reportsDirectory": "../../../coverage/libs/playbook/feature-patterns"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc -p {projectRoot}/tsconfig.lib.json --noEmit",
+          "tsc -p {projectRoot}/tsconfig.spec.json --noEmit"
+        ],
+        "parallel": false
+      }
+    }
+  }
+}

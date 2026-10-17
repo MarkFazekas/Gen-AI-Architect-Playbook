@@ -1,0 +1,14 @@
+[
+  {
+    "id": "retrieval-augmented-generation",
+    "title": "Retrieval-augmented generation",
+    "summary": "Ground model answers in your own documents by retrieving relevant passages at query time and citing them in the response.",
+    "status": "published"
+  },
+  {
+    "id": "evaluation-harness",
+    "title": "Evaluation harness",
+    "summary": "Measure answer quality with a fixed test set and automated graders before every prompt or model change.",
+    "status": "draft"
+  }
+]

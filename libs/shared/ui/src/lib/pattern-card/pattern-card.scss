@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+.status {
+  font: var(--mat-sys-label-medium);
+  color: var(--mat-sys-on-surface-variant);
+  text-transform: capitalize;
+}
+
+.summary {
+  margin: 0;
+  font: var(--mat-sys-body-medium);
+  color: var(--mat-sys-on-surface);
+}

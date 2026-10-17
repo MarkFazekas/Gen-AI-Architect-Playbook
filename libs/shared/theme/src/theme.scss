@@ -1,0 +1,51 @@
+// THE central theme: the single source of colors, typography, shape and density.
+// Do not hand-edit colors here or in _theme-colors.scss. Regenerate the palettes instead:
+//   npx nx g @angular/material:theme-color --primaryColor="#1F4E79" --tertiaryColor="#B5832A" \
+//     --neutralColor="#5E6268" --includeHighContrast --directory=libs/shared/theme/src/
+// Components must only use tokens (--mat-sys-*, --pb-*); stylelint enforces this.
+@use '@angular/material' as mat;
+@use './theme-colors' as brand;
+@use './tokens';
+
+html {
+  color-scheme: light dark; // follow the OS setting; use `light` for light mode only
+
+  @include mat.theme(
+    (
+      color: (
+        primary: brand.$primary-palette,
+        tertiary: brand.$tertiary-palette,
+      ),
+      typography: (
+        plain-family: (
+          IBM Plex Sans,
+          system-ui,
+          sans-serif,
+        ),
+        brand-family: (
+          IBM Plex Serif,
+          Georgia,
+          serif,
+        ),
+        bold-weight: 600,
+      ),
+      density: 0,
+    )
+  );
+
+  // shape: calmer corners than the Material 3 defaults
+  @include mat.theme-overrides(
+    (
+      corner-extra-small: 2px,
+      corner-small: 4px,
+      corner-medium: 8px,
+      corner-large: 12px,
+    )
+  );
+}
+
+@media (prefers-contrast: more) {
+  html {
+    @include brand.high-contrast-overrides(color-scheme);
+  }
+}

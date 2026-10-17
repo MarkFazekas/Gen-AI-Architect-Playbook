@@ -1,0 +1,25 @@
+.pattern-list {
+  max-width: var(--pb-content-max-width);
+  padding: var(--pb-space-4);
+  margin: 0 auto;
+}
+
+.heading {
+  margin: 0 0 var(--pb-space-4);
+  font: var(--mat-sys-headline-medium);
+  color: var(--mat-sys-on-surface);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: var(--pb-space-3);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.empty {
+  font: var(--mat-sys-body-medium);
+  color: var(--mat-sys-on-surface-variant);
+}

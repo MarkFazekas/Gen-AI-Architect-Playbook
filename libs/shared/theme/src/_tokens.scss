@@ -1,0 +1,10 @@
+// Project tokens that Angular Material does not provide (spacing and layout).
+html {
+  --pb-space-1: 4px;
+  --pb-space-2: 8px;
+  --pb-space-3: 16px;
+  --pb-space-4: 24px;
+  --pb-space-5: 32px;
+  --pb-space-6: 48px;
+  --pb-content-max-width: 72rem;
+}
