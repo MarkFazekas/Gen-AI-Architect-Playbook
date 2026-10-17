@@ -1,5 +1,5 @@
 // Quality-gate and theme files: the Stop hook makes the agent report every change to them.
-// cspell.json and knip.json are deliberately not listed: adding words or ignores is routine.
+// knip.json is deliberately not listed: adding ignores is routine.
 import { isAbsolute, join, relative } from 'node:path';
 
 const PROTECTED = [

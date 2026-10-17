@@ -6,42 +6,41 @@ the source of truth; they are listed in [Where things live](#where-things-live).
 
 ## Layers
 
-| Layer                    | Protects against                                                           | Python reference                | This workspace                                                                                                     |
-| ------------------------ | -------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Type safety              | type errors, `any`, broken template bindings                               | mypy `strict` + pydantic plugin | strict `tsconfig`, Angular `strictTemplates`, type-aware ESLint                                                    |
-| Code quality             | complexity, bug patterns, style, docs, spelling                            | ruff `ALL`, flake8, wemake      | ESLint (typescript-eslint, angular-eslint, sonarjs, unicorn, jsdoc, import-x, rxjs-x), Prettier, cspell, stylelint |
-| Architecture             | layer violations, cycles, dead code                                        | none                            | Nx module boundaries (tags), `import-x/no-cycle`, knip                                                             |
-| Runtime and user quality | untrusted API data, accessibility, critical flows, vulnerable dependencies | Pydantic, pytest                | Zod, Vitest, Playwright + axe, `npm audit`                                                                         |
+| Layer                    | Protects against                                                           | Python reference                | This workspace                                                                                             |
+| ------------------------ | -------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Type safety              | type errors, `any`, broken template bindings                               | mypy `strict` + pydantic plugin | strict `tsconfig`, Angular `strictTemplates`, type-aware ESLint                                            |
+| Code quality             | complexity, bug patterns, style, docs                                      | ruff `ALL`, flake8, wemake      | ESLint (typescript-eslint, angular-eslint, sonarjs, unicorn, jsdoc, import-x, rxjs-x), Prettier, stylelint |
+| Architecture             | layer violations, cycles, dead code                                        | none                            | Nx module boundaries (tags), `import-x/no-cycle`, knip                                                     |
+| Runtime and user quality | untrusted API data, accessibility, critical flows, vulnerable dependencies | Pydantic, pytest                | Zod, Vitest, Playwright + axe, `npm audit`                                                                 |
 
 Nx runs everything: tasks are cached, and CI checks only the projects a change affects (`nx affected`).
 
 ## Tool mapping
 
-| Python                              | Here                                                                                                   |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| mypy `strict`                       | `tsconfig.base.json` (`strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, …)           |
-| mypy pydantic plugin                | `angularCompilerOptions`: `strictTemplates`, `typeCheckHostBindings`, `extendedDiagnostics` as errors  |
-| mypy `warn_unused_ignores`          | `linterOptions.reportUnusedDisableDirectives: "error"`                                                 |
-| Pydantic (runtime validation)       | Zod schemas in `data-access` libraries                                                                 |
-| ruff `ALL`                          | typescript-eslint `strictTypeChecked` + `stylisticTypeChecked`, angular-eslint `tsAll` + `templateAll` |
-| ruff format                         | Prettier (`nx format:check`)                                                                           |
-| ruff `I` / `TC`                     | `simple-import-sort`, `consistent-type-imports` (autofixed)                                            |
-| ruff `dummy-variable-rgx`           | `no-unused-vars` with `^_` patterns                                                                    |
-| mccabe `max-complexity = 8`         | `complexity: 8`                                                                                        |
-| pydocstyle (google)                 | `eslint-plugin-jsdoc`                                                                                  |
-| flake8-bugbear                      | strictTypeChecked (`no-floating-promises`, `switch-exhaustiveness-check`, …), sonarjs, rxjs-x          |
-| flake8-print                        | `no-console`                                                                                           |
-| flake8-eradicate                    | `sonarjs/no-commented-code`                                                                            |
-| flake8-builtins                     | `@typescript-eslint/no-shadow`, `no-shadow-restricted-names`, `no-restricted-globals`                  |
-| flake8-annotations                  | `explicit-function-return-type`, `explicit-module-boundary-types`, `explicit-member-accessibility`     |
-| flake8-comprehensions               | unicorn, `@typescript-eslint/prefer-*`                                                                 |
-| flake8-assertive                    | `@vitest/eslint-plugin` (`prefer-to-be`, `prefer-strict-equal`, …)                                     |
-| flake8-spellcheck + `whitelist.txt` | cspell + `cspell.json` words                                                                           |
-| pep8-naming                         | `@typescript-eslint/naming-convention`, angular-eslint selector rules                                  |
-| gitlint                             | commitlint (`commit-msg` hook and CI)                                                                  |
-| pytest / pytest-mock                | Vitest, `vi.fn()` / `vi.spyOn()`                                                                       |
-| moto                                | `HttpTestingController`                                                                                |
-| `.python-version`                   | `.nvmrc` + `engines`                                                                                   |
+| Python                        | Here                                                                                                   |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------ |
+| mypy `strict`                 | `tsconfig.base.json` (`strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, …)           |
+| mypy pydantic plugin          | `angularCompilerOptions`: `strictTemplates`, `typeCheckHostBindings`, `extendedDiagnostics` as errors  |
+| mypy `warn_unused_ignores`    | `linterOptions.reportUnusedDisableDirectives: "error"`                                                 |
+| Pydantic (runtime validation) | Zod schemas in `data-access` libraries                                                                 |
+| ruff `ALL`                    | typescript-eslint `strictTypeChecked` + `stylisticTypeChecked`, angular-eslint `tsAll` + `templateAll` |
+| ruff format                   | Prettier (`nx format:check`)                                                                           |
+| ruff `I` / `TC`               | `simple-import-sort`, `consistent-type-imports` (autofixed)                                            |
+| ruff `dummy-variable-rgx`     | `no-unused-vars` with `^_` patterns                                                                    |
+| mccabe `max-complexity = 8`   | `complexity: 8`                                                                                        |
+| pydocstyle (google)           | `eslint-plugin-jsdoc`                                                                                  |
+| flake8-bugbear                | strictTypeChecked (`no-floating-promises`, `switch-exhaustiveness-check`, …), sonarjs, rxjs-x          |
+| flake8-print                  | `no-console`                                                                                           |
+| flake8-eradicate              | `sonarjs/no-commented-code`                                                                            |
+| flake8-builtins               | `@typescript-eslint/no-shadow`, `no-shadow-restricted-names`, `no-restricted-globals`                  |
+| flake8-annotations            | `explicit-function-return-type`, `explicit-module-boundary-types`, `explicit-member-accessibility`     |
+| flake8-comprehensions         | unicorn, `@typescript-eslint/prefer-*`                                                                 |
+| flake8-assertive              | `@vitest/eslint-plugin` (`prefer-to-be`, `prefer-strict-equal`, …)                                     |
+| pep8-naming                   | `@typescript-eslint/naming-convention`, angular-eslint selector rules                                  |
+| gitlint                       | commitlint (`commit-msg` hook and CI)                                                                  |
+| pytest / pytest-mock          | Vitest, `vi.fn()` / `vi.spyOn()`                                                                       |
+| moto                          | `HttpTestingController`                                                                                |
+| `.python-version`             | `.nvmrc` + `engines`                                                                                   |
 
 ## `.flake8` limits
 
@@ -70,19 +69,19 @@ test per-file ignores → the `**/*.spec.ts` block in `eslint.config.mjs`.
 
 ## Where things live
 
-| File                                                           | Purpose                                                              |
-| -------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `tsconfig.base.json`, `*/tsconfig.json`                        | strict TypeScript and Angular compiler options                       |
-| `eslint.config.mjs`                                            | shared TypeScript rules, module boundaries, test rules               |
-| `eslint.angular.mjs`                                           | Angular rules (`tsAll` / `templateAll` with a justified ignore list) |
-| `*/eslint.config.mjs`                                          | per project: root + Angular config + Prettier                        |
-| `tools/lint-rules/`                                            | custom ESLint rules (wemake gaps)                                    |
-| `.prettierrc`, `.stylelintrc.json`, `cspell.json`, `knip.json` | formatting, SCSS lint, spelling, dead code                           |
-| `commitlint.config.mjs`, `.husky/`                             | commit convention and git hooks                                      |
-| `nx.json`                                                      | caching inputs, generator defaults, plugins, `neverConnectToCloud`   |
-| `libs/shared/theme/`                                           | the single source of the visual identity                             |
-| `.claude/`, `CLAUDE.md`, `.mcp.json`                           | AI agent rules, hooks and MCP servers                                |
-| `.github/workflows/ci.yml`                                     | CI gate                                                              |
+| File                                            | Purpose                                                              |
+| ----------------------------------------------- | -------------------------------------------------------------------- |
+| `tsconfig.base.json`, `*/tsconfig.json`         | strict TypeScript and Angular compiler options                       |
+| `eslint.config.mjs`                             | shared TypeScript rules, module boundaries, test rules               |
+| `eslint.angular.mjs`                            | Angular rules (`tsAll` / `templateAll` with a justified ignore list) |
+| `*/eslint.config.mjs`                           | per project: root + Angular config + Prettier                        |
+| `tools/lint-rules/`                             | custom ESLint rules (wemake gaps)                                    |
+| `.prettierrc`, `.stylelintrc.json`, `knip.json` | formatting, SCSS lint, dead code                                     |
+| `commitlint.config.mjs`, `.husky/`              | commit convention and git hooks                                      |
+| `nx.json`                                       | caching inputs, generator defaults, plugins, `neverConnectToCloud`   |
+| `libs/shared/theme/`                            | the single source of the visual identity                             |
+| `.claude/`, `CLAUDE.md`, `.mcp.json`            | AI agent rules, hooks and MCP servers                                |
+| `.github/workflows/ci.yml`                      | CI gate                                                              |
 
 ## Architecture
 
@@ -129,14 +128,14 @@ Every project has a `scope:*` and a `type:*` tag. `@nx/enforce-module-boundaries
 
 ## Gates
 
-| Stage           | Runs                                                                                                               |
-| --------------- | ------------------------------------------------------------------------------------------------------------------ |
-| AI agent edit   | Claude Code hooks: guards before the edit; Prettier, ESLint, stylelint, cspell on the file after it                |
-| AI agent finish | Stop hook: `nx affected -t lint typecheck test` for the changed files; report of changed quality-gate files        |
-| `pre-commit`    | lint-staged: ESLint, Prettier, stylelint, cspell on staged files                                                   |
-| `commit-msg`    | commitlint                                                                                                         |
-| `pre-push`      | `nx sync:check`, `nx affected -t lint typecheck test`                                                              |
-| CI              | sync and format checks, `nx affected -t lint typecheck test build e2e`, stylelint, cspell, knip, audit, commitlint |
+| Stage           | Runs                                                                                                        |
+| --------------- | ----------------------------------------------------------------------------------------------------------- |
+| AI agent edit   | Claude Code hooks: guards before the edit; Prettier, ESLint, stylelint on the file after it                 |
+| AI agent finish | Stop hook: `nx affected -t lint typecheck test` for the changed files; report of changed quality-gate files |
+| `pre-commit`    | lint-staged: ESLint, Prettier, stylelint on staged files                                                    |
+| `commit-msg`    | commitlint                                                                                                  |
+| `pre-push`      | `nx sync:check`, `nx affected -t lint typecheck test`                                                       |
+| CI              | sync and format checks, `nx affected -t lint typecheck test build e2e`, stylelint, knip, audit, commitlint  |
 
 `npm run quality` runs the whole gate locally (without e2e), including the custom lint rule tests (`npm run test:lint-rules`).
 
