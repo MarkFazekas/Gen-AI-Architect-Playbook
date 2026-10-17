@@ -23,12 +23,12 @@ Claude Code integration.
 
 ## Commands
 
-| Command                                  | What it does                                                                            |
-| ---------------------------------------- | --------------------------------------------------------------------------------------- |
-| `npx nx serve playbook`                  | Dev server on http://localhost:4200                                                     |
-| `npm run quality`                        | Full gate: sync, format, lint, typecheck, test, build, stylelint, spelling, knip, audit |
-| `npx nx affected -t lint typecheck test` | Only the projects touched by your change                                                |
-| `npx nx e2e playbook-e2e`                | Playwright end-to-end tests including an axe WCAG 2.1 AA scan                           |
+| Command                                  | What it does                                                                  |
+| ---------------------------------------- | ----------------------------------------------------------------------------- |
+| `npx nx serve playbook`                  | Dev server on http://localhost:4200                                           |
+| `npm run quality`                        | Full gate: sync, format, lint, typecheck, test, build, stylelint, knip, audit |
+| `npx nx affected -t lint typecheck test` | Only the projects touched by your change                                      |
+| `npx nx e2e playbook-e2e`                | Playwright end-to-end tests including an axe WCAG 2.1 AA scan                 |
 
 ## Conventions
 

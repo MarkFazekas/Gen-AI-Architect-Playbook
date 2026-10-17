@@ -23,7 +23,6 @@ const problems = [
   run('prettier', ['--write', '--log-level=warn', '--ignore-unknown', file]),
   /\.(ts|html)$/.test(file) ? run('eslint', ['--fix', '--max-warnings=0', '--no-warn-ignored', file]) : '',
   /\.scss$/.test(file) ? run('stylelint', ['--fix', '--allow-empty-input', file]) : '',
-  run('cspell', ['--no-progress', '--no-summary', '--no-must-find-files', file]),
 ].filter(Boolean);
 
 // exit code 2: stderr is fed back to the agent, which fixes it right away

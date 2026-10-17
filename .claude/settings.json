@@ -16,7 +16,8 @@
       "allowWrite": ["/tmp/.nx", "~/.nx"]
     },
     "network": {
-      "allowUnixSockets": ["/tmp/.nx", "~/.nx"]
+      "allowUnixSockets": ["/tmp/.nx", "~/.nx"],
+      "allowedDomains": ["www.google-analytics.com"]
     }
   },
   "permissions": {
@@ -47,7 +48,12 @@
     "SessionStart": [
       {
         "matcher": "startup",
-        "hooks": [{ "type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run.sh session-start.mjs" }]
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/run.sh session-start.mjs"
+          }
+        ]
       }
     ],
     "PreToolUse": [
