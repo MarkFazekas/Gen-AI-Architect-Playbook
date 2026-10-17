@@ -4,6 +4,7 @@
 //     --neutralColor="#5E6268" --includeHighContrast --directory=libs/shared/theme/src/
 // Components must only use tokens (--mat-sys-*, --pb-*); stylelint enforces this.
 @use '@angular/material' as mat;
+@use './fonts';
 @use './theme-colors' as brand;
 @use './tokens';
 
