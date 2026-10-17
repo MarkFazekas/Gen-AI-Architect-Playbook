@@ -40,6 +40,7 @@ The quality baseline and its rationale: `docs/quality-baseline.md`.
 - Names: imports `@playbook/<lib>`, selector prefix `pb`, kebab-case file names, no `Component` class suffix.
 - Every component has separate `.ts`, `.html` and (if needed) `.scss` files, OnPush change detection and signal inputs.
 - Commit messages: `<type>: <Subject> - GAAP-<number>` (e.g. `feat: Add pattern list - GAAP-12`; `GAAP-0` without a ticket).
+  No AI co-author trailers (`Co-Authored-By: Claude …`) in commit messages.
 - No Nx Cloud; never skip git hooks.
 
 ## Design (Angular Material 3)

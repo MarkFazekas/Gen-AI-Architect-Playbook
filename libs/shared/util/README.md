@@ -1,7 +1,5 @@
 # shared-util
 
-This library was generated with [Nx](https://nx.dev).
+Framework-free TypeScript helpers (no `@angular/*` imports).
 
-## Running unit tests
-
-Run `nx test shared-util` to execute the unit tests.
+Tests: `npx nx test shared-util`.

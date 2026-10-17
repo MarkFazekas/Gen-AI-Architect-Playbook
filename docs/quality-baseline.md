@@ -1,9 +1,8 @@
 # Quality baseline
 
-This workspace carries over the quality baseline of a Python reference project (`ApplicantFilterSystemO/manager_backend`:
-ruff `ALL`, flake8 + wemake-python-styleguide, mypy `strict`, gitlint) to Angular. This document explains the mapping
-and the decisions. The configuration files themselves are the source of truth; they are listed in
-[Where things live](#where-things-live).
+The quality baseline of this workspace follows a strict Python baseline (ruff `ALL`, flake8 + wemake-python-styleguide,
+mypy `strict`, gitlint). This document explains the mapping and the decisions. The configuration files themselves are
+the source of truth; they are listed in [Where things live](#where-things-live).
 
 ## Layers
 
@@ -154,8 +153,8 @@ in each library's `vite.config.mts`, `coverageThresholds` in the app's `project.
   - `lint-file.mjs`: formats, autofixes and reports the remaining problems after each edit.
   - `quality-gate.mjs`: runs lint, typecheck and tests on affected projects before the agent finishes, and makes the
     agent list every changed quality-gate or theme file (`protected-paths.mjs`) with the reason in its final message.
-- The hooks never ask for approval: approval prompts get approved without reading. Hard violations are denied; config
-  changes are surfaced in the summary, and pull request review plus CI remain the real gate.
+- The hooks never ask for approval. Hard violations are denied; config changes are surfaced in the agent's summary,
+  and pull request review plus CI remain the real gate.
 - Permissions (`.claude/settings.json`): Nx, npm scripts, read-only npm commands, `git add/commit/push` are allowed;
   `npm install` asks; reading `.env` and `npm publish` are denied.
 - Skill `/new-lib`: creates a library with the naming convention and tags.
@@ -165,28 +164,28 @@ in each library's `vite.config.mts`, `coverageThresholds` in the app's `project.
 | Topic            | Decision                                                                                 |
 | ---------------- | ---------------------------------------------------------------------------------------- |
 | Monorepo tooling | Nx 23, without Nx Cloud (`neverConnectToCloud`)                                          |
-| Node             | 26 (LTS from 2026-10-28, supported until 2029-04-30), nvm + `.nvmrc`                     |
+| Node             | 26 LTS (supported until 2029-04-30), nvm + `.nvmrc`                                      |
 | Package manager  | npm, lockfile committed, `save-exact`, `engine-strict`                                   |
-| Framework        | Angular 22.2 (22.1 had high/critical advisories), zoneless, standalone, signals          |
+| Framework        | Angular 22, zoneless, standalone components, signals                                     |
 | UI               | Angular Material 3, central theme, IBM Plex Sans/Serif and Material Symbols, self-hosted |
 | Unit tests       | Vitest: `vitest-angular` for the app, `vitest-analog` for libraries                      |
 | End-to-end       | Playwright (Chromium) + axe WCAG 2.1 AA                                                  |
 | Language         | English for code, docs and commit messages                                               |
 
-## Deviations found during setup
+## Technical notes
 
-- `vitest-angular` needs buildable libraries, so the (non-buildable) libraries use `vitest-analog`.
-- The Playwright Atomizer (`e2e-ci`) only runs with Nx Cloud, so CI uses the plain `e2e` target.
-- Custom ESLint rules live in `tools/lint-rules`, not `tools/eslint-rules`: `@nx/eslint-plugin` auto-loads the latter as
-  a legacy location. Rules are `.mjs` so they load without a TypeScript transpiler.
-- ESLint 10 is used; the config is looked up from each linted file, so lint-staged and the hooks pick up the project configs.
+- Libraries use `vitest-analog`: `vitest-angular` requires buildable libraries.
+- CI runs the plain `e2e` target: the atomized `e2e-ci` target requires Nx Cloud.
+- Custom ESLint rules live in `tools/lint-rules`: `@nx/eslint-plugin` auto-loads `tools/eslint-rules` as a legacy
+  location. The rules are `.mjs`, so they load without a TypeScript transpiler, and `npm run test:lint-rules` tests them.
+- ESLint 10 looks up the config from each linted file, so lint-staged and the hooks pick up the project configs.
 - Disabled on purpose: `unicorn/single-line-block-comment-style` (conflicts with one-line docstrings),
   `unicorn/no-asterisk-prefix-in-documentation-comments` (circular autofix with `jsdoc/check-alignment`),
   `import-x/no-unresolved` (TypeScript reports unresolved imports already).
-- `npm run audit` fails on high advisories in production dependencies and on critical ones anywhere. Some development
-  tools (stylelint via `braces`, Nx via `undici`) have high advisories without a fix yet.
+- `npm run audit` fails on high advisories in production dependencies and on critical ones anywhere; high advisories
+  in development tools are reported but do not fail the gate.
 - Template type checks run in the Angular compiler only, so `build` is part of the type-safety gate next to `typecheck`.
-- Hooks (Claude Code and git) select the Node version from `.nvmrc` because the shell default may be older.
+- Hooks (Claude Code and git) select the Node version from `.nvmrc`, because the shell default may be older.
 
 ## Open items
 

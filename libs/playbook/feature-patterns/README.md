@@ -1,7 +1,5 @@
 # playbook-feature-patterns
 
-This library was generated with [Nx](https://nx.dev).
+The patterns feature: routed pages that combine `data-access` services with `shared-ui` components.
 
-## Running unit tests
-
-Run `nx test playbook-feature-patterns` to execute the unit tests.
+Tests: `npx nx test playbook-feature-patterns`.

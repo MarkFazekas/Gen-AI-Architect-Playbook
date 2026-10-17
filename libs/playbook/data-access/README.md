@@ -1,7 +1,5 @@
 # playbook-data-access
 
-This library was generated with [Nx](https://nx.dev).
+Backend access for the playbook domain: HTTP services and the Zod schemas that validate every response.
 
-## Running unit tests
-
-Run `nx test playbook-data-access` to execute the unit tests.
+Tests: `npx nx test playbook-data-access`.

@@ -1,7 +1,5 @@
 # shared-ui
 
-This library was generated with [Nx](https://nx.dev).
+Presentational components built on Angular Material. No HTTP, router or Zod; inputs in, events out.
 
-## Running unit tests
-
-Run `nx test shared-ui` to execute the unit tests.
+Tests: `npx nx test shared-ui`.

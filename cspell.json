@@ -29,14 +29,5 @@
     "worktrees",
     "zoneless"
   ],
-  "ignorePaths": [
-    "node_modules",
-    "dist",
-    "coverage",
-    ".angular",
-    ".nx",
-    "package-lock.json",
-    "angular-quality-baseline.md",
-    "**/_theme-colors.scss"
-  ]
+  "ignorePaths": ["node_modules", "dist", "coverage", ".angular", ".nx", "package-lock.json", "**/_theme-colors.scss"]
 }
