@@ -122,6 +122,10 @@ export default defineConfig([
       'sonarjs/no-duplicate-string': ['error', { threshold: 5 }], // max-string-usages = 5
       'import-x/max-dependencies': ['error', { max: 15, ignoreTypeImports: true }], // max-imports = 15
       'workspace/max-methods': ['error', { max: 10 }], // max-methods = 10 (WPS214)
+      'workspace/max-local-variables': ['error', { max: 10 }], // max-local-variables = 10 (WPS210)
+      'workspace/max-try-body-length': ['error', { max: 2 }], // max-try-body-length = 2 (WPS229)
+      'workspace/max-import-from-members': ['error', { max: 15 }], // max-import-from-members = 15 (WPS235)
+      'workspace/max-module-members': ['error', { max: 20 }], // max-module-members = 20 (WPS202)
 
       // --- flake8-eradicate ---
       'sonarjs/no-commented-code': 'error',
@@ -219,6 +223,7 @@ export default defineConfig([
 
       // .flake8 per-file-ignores: WPS201, WPS235
       'import-x/max-dependencies': 'off',
+      'workspace/max-import-from-members': 'off',
       'max-nested-callbacks': 'off',
       'max-lines': 'off',
       'sonarjs/no-duplicate-string': 'off',

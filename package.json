@@ -13,12 +13,13 @@
     "lint:styles": "stylelint \"{apps,libs}/**/*.scss\"",
     "typecheck": "nx run-many -t typecheck",
     "test": "nx run-many -t test",
+    "test:lint-rules": "node --test tools/lint-rules/",
     "build": "nx run-many -t build",
     "e2e": "nx run-many -t e2e",
     "spell": "cspell --no-progress \"**/*.{ts,mts,mjs,html,scss,md,json}\"",
     "knip": "knip",
     "audit": "npm audit --omit=dev --audit-level=high && npm audit --audit-level=critical",
-    "quality": "nx sync:check && nx format:check && nx run-many -t lint typecheck test build && npm run lint:styles && npm run spell && npm run knip && npm run audit",
+    "quality": "nx sync:check && nx format:check && nx run-many -t lint typecheck test build && npm run test:lint-rules && npm run lint:styles && npm run spell && npm run knip && npm run audit",
     "prepare": "husky"
   },
   "devDependencies": {

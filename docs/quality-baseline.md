@@ -46,24 +46,24 @@ Nx runs everything: tasks are cached, and CI checks only the projects a change a
 
 ## `.flake8` limits
 
-| Limit                              | Value | Rule                                                 | Status           |
-| ---------------------------------- | ----- | ---------------------------------------------------- | ---------------- |
-| `max_complexity`                   | 8     | `complexity`                                         | exact            |
-| wemake cognitive score             | 12    | `sonarjs/cognitive-complexity`                       | exact            |
-| `max_line_length`                  | 120   | Prettier `printWidth`                                | exact            |
-| `max-string-usages` (WPS226)       | 5     | `sonarjs/no-duplicate-string`                        | exact            |
-| `max-name-length` (WPS118)         | 50    | `id-length` (min 2, max 50)                          | exact            |
-| wrong variable names (WPS110)      | –     | `id-denylist`                                        | exact            |
-| `max-imports` (WPS201)             | 15    | `import-x/max-dependencies`                          | exact            |
-| wemake `max-arguments`             | 5     | `max-params`                                         | exact            |
-| wemake `max-asserts`               | 5     | `vitest/max-expects`                                 | exact            |
-| `max-methods` (WPS214)             | 10    | `workspace/max-methods` (custom, `tools/lint-rules`) | exact            |
-| wemake `max-offset-blocks`         | 5     | `max-depth: 4`                                       | approximate      |
-| `max-module-members` (WPS202)      | 20    | `max-lines: 300`, `max-classes-per-file: 1`          | proxy            |
-| `max-local-variables` (WPS210)     | 10    | custom rule, same pattern as `max-methods`           | to do            |
-| `max-try-body-length` (WPS229)     | 2     | custom rule                                          | to do            |
-| `max-import-from-members` (WPS235) | 15    | custom rule (`ImportDeclaration.specifiers.length`)  | to do            |
-| `max-line-complexity` (WPS221)     | 13    | –                                                    | not carried over |
+| Limit                              | Value | Rule                                                       | Status           |
+| ---------------------------------- | ----- | ---------------------------------------------------------- | ---------------- |
+| `max_complexity`                   | 8     | `complexity`                                               | exact            |
+| wemake cognitive score             | 12    | `sonarjs/cognitive-complexity`                             | exact            |
+| `max_line_length`                  | 120   | Prettier `printWidth`                                      | exact            |
+| `max-string-usages` (WPS226)       | 5     | `sonarjs/no-duplicate-string`                              | exact            |
+| `max-name-length` (WPS118)         | 50    | `id-length` (min 2, max 50)                                | exact            |
+| wrong variable names (WPS110)      | –     | `id-denylist`                                              | exact            |
+| `max-imports` (WPS201)             | 15    | `import-x/max-dependencies`                                | exact            |
+| wemake `max-arguments`             | 5     | `max-params`                                               | exact            |
+| wemake `max-asserts`               | 5     | `vitest/max-expects`                                       | exact            |
+| `max-methods` (WPS214)             | 10    | `workspace/max-methods` (custom, `tools/lint-rules`)       | exact            |
+| wemake `max-offset-blocks`         | 5     | `max-depth: 4`                                             | approximate      |
+| `max-module-members` (WPS202)      | 20    | `workspace/max-module-members` (custom)                    | exact            |
+| `max-local-variables` (WPS210)     | 10    | `workspace/max-local-variables` (custom)                   | exact            |
+| `max-try-body-length` (WPS229)     | 2     | `workspace/max-try-body-length` (custom)                   | exact            |
+| `max-import-from-members` (WPS235) | 15    | `workspace/max-import-from-members` (custom; off in tests) | exact            |
+| `max-line-complexity` (WPS221)     | 13    | –                                                          | not carried over |
 
 Python ignores and their counterparts: `E501` → Prettier owns line length; `N818` → no `Error` suffix enforced;
 `WPS305` (f-strings) → template literals are required (`prefer-template`); `COM812` → `eslint-config-prettier` last;
@@ -123,7 +123,7 @@ Every project has a `scope:*` and a `type:*` tag. `@nx/enforce-module-boundaries
 | No gradients                                                            | `function-disallowed-list`                                             |
 | Shadows, corners, fonts and z-index from tokens only                    | `declaration-strict-value`                                             |
 | No `::ng-deep`, `!important` or ID selectors                            | stylelint                                                              |
-| Theme changes need human approval                                       | Claude Code `guard-edit` hook                                          |
+| Theme changes are reported by the agent                                 | Claude Code Stop hook (`quality-gate.mjs`)                             |
 | Material components first, restrained color use, no emoji icons         | review rule (`CLAUDE.md`)                                              |
 
 ## Gates
@@ -131,13 +131,17 @@ Every project has a `scope:*` and a `type:*` tag. `@nx/enforce-module-boundaries
 | Stage           | Runs                                                                                                               |
 | --------------- | ------------------------------------------------------------------------------------------------------------------ |
 | AI agent edit   | Claude Code hooks: guards before the edit; Prettier, ESLint, stylelint, cspell on the file after it                |
-| AI agent finish | Stop hook: `nx affected -t lint typecheck test` for the changed files                                              |
+| AI agent finish | Stop hook: `nx affected -t lint typecheck test` for the changed files; report of changed quality-gate files        |
 | `pre-commit`    | lint-staged: ESLint, Prettier, stylelint, cspell on staged files                                                   |
 | `commit-msg`    | commitlint                                                                                                         |
 | `pre-push`      | `nx sync:check`, `nx affected -t lint typecheck test`                                                              |
 | CI              | sync and format checks, `nx affected -t lint typecheck test build e2e`, stylelint, cspell, knip, audit, commitlint |
 
-`npm run quality` runs the whole gate locally (without e2e).
+`npm run quality` runs the whole gate locally (without e2e), including the custom lint rule tests (`npm run test:lint-rules`).
+
+Unit test coverage must reach 80% (statements, branches, functions, lines) in every project: `coverage.thresholds`
+in each library's `vite.config.mts`, `coverageThresholds` in the app's `project.json`. Bootstrap files (`main.ts`,
+`app.config.ts`) are covered by the e2e tests instead.
 
 ## AI tooling
 
@@ -145,11 +149,15 @@ Every project has a `scope:*` and a `type:*` tag. `@nx/enforce-module-boundaries
 - Nx Claude Code plugin (skills + Nx MCP), enabled in `.claude/settings.json`.
 - MCP servers in `.mcp.json`: Angular CLI (read-only: best practices, docs) and Playwright (browser checks).
 - Hooks in `.claude/hooks/`, started through `run.sh`, which selects the Node version from `.nvmrc`:
-  - `guard-edit.mjs`: quality-gate and theme files need approval; no new `eslint-disable`, `@ts-ignore` or `.only` in code.
-  - `guard-bash.mjs`: no skipped git hooks, force push, Nx Cloud or publishing; dependency updates and shell writes
-    to protected files need approval.
+  - `guard-edit.mjs`: denies new `eslint-disable`, `@ts-ignore` or `.only` in code and hand edits of the lockfile.
+  - `guard-bash.mjs`: denies skipped git hooks, force push, Nx Cloud and publishing.
   - `lint-file.mjs`: formats, autofixes and reports the remaining problems after each edit.
-  - `quality-gate.mjs`: runs lint, typecheck and tests on affected projects before the agent finishes.
+  - `quality-gate.mjs`: runs lint, typecheck and tests on affected projects before the agent finishes, and makes the
+    agent list every changed quality-gate or theme file (`protected-paths.mjs`) with the reason in its final message.
+- The hooks never ask for approval: approval prompts get approved without reading. Hard violations are denied; config
+  changes are surfaced in the summary, and pull request review plus CI remain the real gate.
+- Permissions (`.claude/settings.json`): Nx, npm scripts, read-only npm commands, `git add/commit/push` are allowed;
+  `npm install` asks; reading `.env` and `npm publish` are denied.
 - Skill `/new-lib`: creates a library with the naming convention and tags.
 
 ## Decisions
@@ -182,7 +190,5 @@ Every project has a `scope:*` and a `type:*` tag. `@nx/enforce-module-boundaries
 
 ## Open items
 
-- Custom rules for WPS210, WPS229, WPS235 and WPS202 (same pattern as `tools/lint-rules/rules/max-methods.mjs`).
-- Coverage thresholds (`coverage.thresholds` in each `vite.config.mts`).
 - Final brand colors and fonts (regenerate the palettes; two lines in `theme.scss`).
 - The lazy feature chunk is ~465 kB raw, mostly Zod; consider `zod/mini` once the data layer grows.

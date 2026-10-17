@@ -36,6 +36,7 @@ jobs:
       - run: npx nx affected -t e2e
 
       # workspace-wide tools
+      - run: npm run test:lint-rules
       - run: npm run lint:styles
       - run: npm run spell
       - run: npm run knip

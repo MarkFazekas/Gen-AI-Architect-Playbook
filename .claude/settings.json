@@ -29,9 +29,18 @@
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "mcp__angular-cli",
-      "mcp__playwright"
+      "mcp__playwright",
+      "Bash(npm view *)",
+      "Bash(npm audit)",
+      "Bash(npm audit --json*)",
+      "Bash(npm audit --omit=dev*)",
+      "Bash(npm audit --audit-level*)",
+      "Bash(npm ls *)",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(git add:*)"
     ],
-    "ask": ["Bash(npm install:*)", "Bash(npm i:*)", "Bash(git commit:*)", "Bash(git push:*)"],
+    "ask": ["Bash(npm install:*)", "Bash(npm i:*)"],
     "deny": ["Read(./.env)", "Read(./.env.*)", "Bash(npm publish:*)"]
   },
   "hooks": {
